@@ -2,13 +2,7 @@ console.log("hello");
 
 var startNode = "A";
 var newNodes = ["A", "B", "C", "D"];
-var newEdges = [
-  ["A", "B"],
-  ["A", "C"],
-  ["B", "C"],
-  ["B", "D"],
-  ["C", "D"]
-];
+var newEdges = [["A", "B"], ["A", "C"], ["B", "C"], ["B", "D"], ["C", "D"]];
 newWeights = [3, 2, 5, 1, 2, 3];
 
 function nextChar(c) {
@@ -25,8 +19,8 @@ document.addEventListener("DOMContentLoaded", function() {
       cols: 2
     },
 
-    style: fetch('js/style.json').then(function(res){
-      return res.json()
+    style: fetch("js/style.json").then(function(res) {
+      return res.json();
     }),
 
     // style: [
@@ -137,13 +131,14 @@ document.addEventListener("DOMContentLoaded", function() {
     let newEdge = [sourceNodeId, targetNodeId];
     newEdges.push(newEdge);
     let weight = prompt("Ingrese el peso");
-    cy.elements().edges()[cy.elements().edges().length - 1]._private.data.label = weight
-    newWeights.push(weight)
+    cy.elements().edges()[
+      cy.elements().edges().length - 1
+    ]._private.data.label = weight;
+    newWeights.push(weight);
   });
 
-
   cy.on("tap", function(evt) {
-    var tgt = evt.target
+    var tgt = evt.target;
     let nextNode = startNode;
 
     if (newNodes.length > 0) {
@@ -164,9 +159,19 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
-  cy.on('cxttap', 'node', function( evt ){
-    var tgt = evt.target
+  cy.on("cxttap", "node", function(evt) {
+    var tgt = evt.target;
+    const nodeId = tgt._private.data.id;
+    const index = newNodes.indexOf(nodeId);
+    newNodes.splice(index, 1);
 
+    for (let i = 0; i < newEdges.length; i++) {
+      if(newEdges[i].includes(nodeId)) {
+        newEdges.splice(i,1)
+        newWeights.splice(i, 1)
+        i--
+      }
+    }
     tgt.remove();
   });
 
@@ -178,9 +183,9 @@ document.addEventListener("DOMContentLoaded", function() {
   //   eh.disableDrawMode();
   // });
 
-//   document.querySelector('#start').addEventListener('click', function() {
-//     eh.start( cy.$('node:selected') );
-//   });
+  //   document.querySelector('#start').addEventListener('click', function() {
+  //     eh.start( cy.$('node:selected') );
+  //   });
 
   document.querySelector("#reset").addEventListener("click", function() {
     cy.elements().remove();
