@@ -25,85 +25,89 @@ document.addEventListener("DOMContentLoaded", function() {
       cols: 2
     },
 
-    style: [
-      {
-        selector: "node",
-        style: {
-          content: "data(name)"
-        }
-      },
+    style: fetch('js/style.json').then(function(res){
+      return res.json()
+    }),
 
-      {
-        selector: "edge",
-        style: {
-          // 'curve-style': 'bezier',
-          // 'target-arrow-shape': 'triangle'
-          // 'label': 'data(label)'
-        }
-      },
+    // style: [
+    //   {
+    //     selector: "node",
+    //     style: {
+    //       content: "data(name)"
+    //     }
+    //   },
 
-      // some style for the extension
+    //   {
+    //     selector: "edge",
+    //     style: {
+    //       // 'curve-style': 'bezier',
+    //       // 'target-arrow-shape': 'triangle'
+    //       // 'label': 'data(label)'
+    //     }
+    //   },
 
-      {
-        selector: ".eh-handle",
-        style: {
-          "background-color": "red",
-          width: 12,
-          height: 12,
-          shape: "ellipse",
-          "overlay-opacity": 0,
-          "border-width": 12, // makes the handle easier to hit
-          "border-opacity": 0
-        }
-      },
+    //   // some style for the extension
 
-      {
-        selector: ".eh-hover",
-        style: {
-          "background-color": "red"
-        }
-      },
+    //   {
+    //     selector: ".eh-handle",
+    //     style: {
+    //       "background-color": "red",
+    //       width: 12,
+    //       height: 12,
+    //       shape: "ellipse",
+    //       "overlay-opacity": 0,
+    //       "border-width": 12, // makes the handle easier to hit
+    //       "border-opacity": 0
+    //     }
+    //   },
 
-      {
-        selector: ".eh-source",
-        style: {
-          "border-width": 2,
-          "border-color": "red"
-        }
-      },
+    //   {
+    //     selector: ".eh-hover",
+    //     style: {
+    //       "background-color": "red"
+    //     }
+    //   },
 
-      {
-        selector: ".eh-target",
-        style: {
-          "border-width": 2,
-          "border-color": "red"
-        }
-      },
+    //   {
+    //     selector: ".eh-source",
+    //     style: {
+    //       "border-width": 2,
+    //       "border-color": "red"
+    //     }
+    //   },
 
-      {
-        selector: ".eh-preview, .eh-ghost-edge",
-        style: {
-          "background-color": "red",
-          "line-color": "red",
-          "target-arrow-color": "red",
-          "source-arrow-color": "red"
-        }
-      },
+    //   {
+    //     selector: ".eh-target",
+    //     style: {
+    //       "border-width": 2,
+    //       "border-color": "red"
+    //     }
+    //   },
 
-      {
-        selector: ".eh-ghost-edge.eh-preview-active",
-        style: {
-          opacity: 0
-        }
-      },
-      {
-        selector: "edge[label]",
-        style: {
-          label: "data(label)",
-          width: 3
-        }
-      }
-    ],
+    //   {
+    //     selector: ".eh-preview, .eh-ghost-edge",
+    //     style: {
+    //       "background-color": "red",
+    //       "line-color": "red",
+    //       "target-arrow-color": "red",
+    //       "source-arrow-color": "red"
+    //     }
+    //   },
+
+    //   {
+    //     selector: ".eh-ghost-edge.eh-preview-active",
+    //     style: {
+    //       opacity: 0
+    //     }
+    //   },
+    //   {
+    //     selector: "edge[label]",
+    //     style: {
+    //       label: "data(label)",
+    //       width: 3
+    //     }
+    //   }
+    // ],
 
     elements: {
       nodes: [
@@ -136,7 +140,6 @@ document.addEventListener("DOMContentLoaded", function() {
     cy.elements().edges()[cy.elements().edges().length - 1]._private.data.label = weight
     newWeights.push(weight)
   });
-
 
 
   cy.on("tap", function(evt) {
