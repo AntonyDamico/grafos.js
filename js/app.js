@@ -1,108 +1,34 @@
 console.log("hello");
 
+// Valores de inicio y globales
 var startNode = "A";
 var newNodes = ["A", "B", "C", "D"];
 var newEdges = [["A", "B"], ["A", "C"], ["B", "C"], ["B", "D"], ["C", "D"]];
-newWeights = [3, 2, 5, 1, 2, 3];
+var newWeights = [3, 2, 5, 1, 2, 3];
 
+// Funcion para aumentar una letra: B+1 => C
 function nextChar(c) {
   return String.fromCharCode(c.charCodeAt(0) + 1);
 }
 
+// Parte principal
 document.addEventListener("DOMContentLoaded", function() {
   var cy = (window.cy = cytoscape({
     container: document.getElementById("cy"),
 
+    // Layout para los nodos iniciales
     layout: {
       name: "grid",
       rows: 2,
       cols: 2
     },
 
+    // Tomado los estilos del json
     style: fetch("js/style.json").then(function(res) {
       return res.json();
     }),
 
-    // style: [
-    //   {
-    //     selector: "node",
-    //     style: {
-    //       content: "data(name)"
-    //     }
-    //   },
-
-    //   {
-    //     selector: "edge",
-    //     style: {
-    //       // 'curve-style': 'bezier',
-    //       // 'target-arrow-shape': 'triangle'
-    //       // 'label': 'data(label)'
-    //     }
-    //   },
-
-    //   // some style for the extension
-
-    //   {
-    //     selector: ".eh-handle",
-    //     style: {
-    //       "background-color": "red",
-    //       width: 12,
-    //       height: 12,
-    //       shape: "ellipse",
-    //       "overlay-opacity": 0,
-    //       "border-width": 12, // makes the handle easier to hit
-    //       "border-opacity": 0
-    //     }
-    //   },
-
-    //   {
-    //     selector: ".eh-hover",
-    //     style: {
-    //       "background-color": "red"
-    //     }
-    //   },
-
-    //   {
-    //     selector: ".eh-source",
-    //     style: {
-    //       "border-width": 2,
-    //       "border-color": "red"
-    //     }
-    //   },
-
-    //   {
-    //     selector: ".eh-target",
-    //     style: {
-    //       "border-width": 2,
-    //       "border-color": "red"
-    //     }
-    //   },
-
-    //   {
-    //     selector: ".eh-preview, .eh-ghost-edge",
-    //     style: {
-    //       "background-color": "red",
-    //       "line-color": "red",
-    //       "target-arrow-color": "red",
-    //       "source-arrow-color": "red"
-    //     }
-    //   },
-
-    //   {
-    //     selector: ".eh-ghost-edge.eh-preview-active",
-    //     style: {
-    //       opacity: 0
-    //     }
-    //   },
-    //   {
-    //     selector: "edge[label]",
-    //     style: {
-    //       label: "data(label)",
-    //       width: 3
-    //     }
-    //   }
-    // ],
-
+    // Nodos y aristas iniciales
     elements: {
       nodes: [
         { data: { id: "A", name: "A" } },
@@ -125,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   var eh = cy.edgehandles();
 
+  // agregando peso y aristas a los arrays globales
   cy.on("ehcomplete", (event, sourceNode, targetNode, addedEles) => {
     let sourceNodeId = sourceNode._private.data.id;
     let targetNodeId = targetNode._private.data.id;
@@ -137,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
     newWeights.push(weight);
   });
 
+  // Dibujando nodo y agregando a array global
   cy.on("tap", function(evt) {
     var tgt = evt.target;
     let nextNode = startNode;
@@ -159,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
+  // Eliminando nodo
   cy.on("cxttap", "node", function(evt) {
     var tgt = evt.target;
     const nodeId = tgt._private.data.id;
@@ -175,18 +104,7 @@ document.addEventListener("DOMContentLoaded", function() {
     tgt.remove();
   });
 
-  // document.querySelector('#draw-on').addEventListener('click', function() {
-  //   eh.enableDrawMode();
-  // });
-
-  // document.querySelector('#draw-off').addEventListener('click', function() {
-  //   eh.disableDrawMode();
-  // });
-
-  //   document.querySelector('#start').addEventListener('click', function() {
-  //     eh.start( cy.$('node:selected') );
-  //   });
-
+  // Boton para reiniciar el canvas
   document.querySelector("#reset").addEventListener("click", function() {
     cy.elements().remove();
     newNodes = [];
